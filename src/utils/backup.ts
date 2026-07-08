@@ -6,7 +6,11 @@ import { readArrayFromJson } from './utils.js';
 const BACKUPS_DIR = path.join(process.cwd(), 'config-backups');
 
 function formatTimestamp(date: Date): string {
-	return date.toISOString().replace(/[:.]/g, '-');
+	const pad = (n: number): string => String(n).padStart(2, '0');
+	return (
+		`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
+		`_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`
+	);
 }
 
 async function ensureBackupsDir(): Promise<void> {

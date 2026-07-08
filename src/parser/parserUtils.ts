@@ -296,7 +296,7 @@ export function processOrderData(orderArray: OrderTableRow[]): Order {
 			processedOrder.coupon = couponField;
 		}
 	});
-	console.log(processedOrder);
+	// console.log(processedOrder);
 	return processedOrder;
 }
 
