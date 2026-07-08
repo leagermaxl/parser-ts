@@ -1,4 +1,5 @@
 import { confirm, select } from '@inquirer/prompts';
+import { SessionExpiredError } from './fetch/fetchUtils.js';
 import { pathFileConfig, runScraper } from './script.js';
 import { createBackup, listBackups, restoreBackup } from './utils/backup.js';
 
@@ -8,7 +9,11 @@ async function handleRun(): Promise<void> {
     await runScraper();
     console.log('Готово.');
   } catch (error) {
-    console.error('Ошибка во время выполнения:', error instanceof Error ? error.message : error);
+    if (error instanceof SessionExpiredError) {
+      console.error(error.message);
+    } else {
+      console.error('Ошибка во время выполнения:', error instanceof Error ? error.message : error);
+    }
   }
 }
 
