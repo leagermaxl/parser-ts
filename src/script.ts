@@ -16,6 +16,10 @@ const urlOrder = process.env.URL_ORDER || '';
 export const pathFileConfig = 'config.json';
 
 export const runScraper = async (): Promise<void> => {
+	if (!urlPage || !urlOrder) {
+		throw new Error('Не заданы URL_PAGE и/или URL_ORDER в .env');
+	}
+
 	const orders: OrdersWithTotal = [];
 
 	const dataFromConfig = (await readArrayFromJson(pathFileConfig))!;
