@@ -1,27 +1,28 @@
 {
-  "name": "parser-ts",
-  "version": "1.0.0",
-  "main": "src/menu.ts",
-  "license": "MIT",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "start": "tsx src/menu.ts",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@inquirer/prompts": "^8.5.2",
-    "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
-    "exceljs": "^4.4.0",
-    "jsdom": "^26.0.0",
-    "luxon": "^3.5.0"
-  },
-  "devDependencies": {
-    "@types/jsdom": "^21.1.7",
-    "@types/luxon": "^3.4.2",
-    "@types/node": "^22.10.5",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
-  }
+	"name": "parser-ts",
+	"version": "1.0.0",
+	"main": "src/menu.ts",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "tsx src/menu.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@inquirer/prompts": "^8.5.2",
+		"axios": "^1.7.9",
+		"dotenv": "^16.4.7",
+		"exceljs": "^4.4.0",
+		"jsdom": "^26.0.0",
+		"luxon": "^3.5.0"
+	},
+	"devDependencies": {
+		"@types/jsdom": "^21.1.7",
+		"@types/luxon": "^3.4.2",
+		"@types/node": "^22.10.5",
+		"prettier": "^3.9.4",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	}
 }
