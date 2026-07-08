@@ -13,9 +13,9 @@ import 'dotenv/config';
 const urlPage = process.env.URL_PAGE || '';
 const urlOrder = process.env.URL_ORDER || '';
 
-const pathFileConfig = 'config.json';
+export const pathFileConfig = 'config.json';
 
-const main = async () => {
+export const runScraper = async (): Promise<void> => {
   const orders: OrdersWithTotal = [];
 
   const dataFromConfig = (await readArrayFromJson(pathFileConfig))!;
@@ -62,5 +62,3 @@ const main = async () => {
     ordersInProgress: inProgressOrders.reverse(),
   });
 };
-
-main();

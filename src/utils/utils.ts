@@ -187,7 +187,9 @@ export async function writeArrayInJson(
 ): Promise<void> {
   try {
     const jsonData = JSON.stringify(array, null, 2);
-    await fs.writeFile(filePath, jsonData, 'utf8');
+    const tmpFilePath = `${filePath}.tmp`;
+    await fs.writeFile(tmpFilePath, jsonData, 'utf8');
+    await fs.rename(tmpFilePath, filePath);
     console.log(`Заказы "в работе" сохранены в файл: ${filePath}`);
   } catch (error) {
     console.error('Ошибка записи файла:', error);

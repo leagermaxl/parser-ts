@@ -1,15 +1,16 @@
 {
   "name": "parser-ts",
   "version": "1.0.0",
-  "main": "src/script.ts",
+  "main": "src/menu.ts",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx src/script.ts",
+    "start": "tsx src/menu.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.5.2",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "exceljs": "^4.4.0",

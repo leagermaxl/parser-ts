@@ -47,6 +47,16 @@ export interface OrdersConfig {
   ordersInProgress: OrderIdRef[];
 }
 
+export type BackupReason = 'manual' | 'auto-run' | 'auto-restore';
+
+export interface BackupMeta {
+  filePath: string;
+  reason: BackupReason;
+  timestamp: Date;
+  lastOrderId: number;
+  ordersInProgressCount: number;
+}
+
 export interface OrderTableRow {
   tableIndex: number;
   data: Record<string, string>;
