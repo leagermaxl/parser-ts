@@ -36,7 +36,7 @@ async function handleChooseConfig(): Promise<void> {
   }
 
   const chosenFilePath = await select<string | null>({
-    message: 'Выберите конфиг для рана:',
+    message: 'Выберите конфиг:',
     choices: [
       { name: 'Отмена', value: null },
       ...backups.map((backup) => ({ name: formatBackupLabel(backup), value: backup.filePath })),
@@ -61,9 +61,9 @@ async function main(): Promise<void> {
     const action = await select({
       message: 'Выберите действие:',
       choices: [
-        { name: 'Запуск работы тулзы', value: 'run' },
+        { name: 'Запуск работы Бур-машины', value: 'run' },
         { name: 'Сохранение конфига', value: 'save' },
-        { name: 'Выбор конфига для рана', value: 'choose' },
+        { name: 'Выбор конфига', value: 'choose' },
         { name: 'Выход', value: 'exit' },
       ],
     });
