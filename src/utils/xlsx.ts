@@ -152,8 +152,8 @@ export async function createStyledExcel(
 		} else if (couponCode === 'curlegina') {
 			order.products.forEach((product, index) => {
 				// 1. Определяем ставку
-				// Сравнение может быть строгим (===) или частичным (.includes)
-				const isSpecial = product.name === SPECIAL_PRODUCT_NAME;
+				// Сравнение частичное — по вхождению подстроки
+				const isSpecial = product.name.includes(SPECIAL_PRODUCT_NAME);
 				const rateLabel = isSpecial ? '20%' : '15%';
 				const rateMultiplier = isSpecial ? 0.2 : 0.15;
 
