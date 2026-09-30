@@ -7,6 +7,7 @@ import {
 	requestsForOrdersByArray,
 	writeArrayInJson,
 } from './utils/utils.js';
+import { roundMoney } from './parser/parserUtils.js';
 import { createStyledExcel } from './utils/xlsx.js';
 import 'dotenv/config';
 
@@ -44,7 +45,7 @@ export const runScraper = async (): Promise<void> => {
 	orders.push(...ordersFromLastOrderId);
 	orders.amountEntire = orders
 		.filter((order) => order.orderStatus.value === 3)
-		.reduce((acc, order) => acc + order.amountPayment, 0);
+		.reduce((acc, order) => roundMoney(acc + order.amountPayment), 0);
 	console.log(orders);
 	await createStyledExcel('all', orders);
 
@@ -56,7 +57,7 @@ export const runScraper = async (): Promise<void> => {
 		const group = groupedOrders[couponCode]! as OrdersWithTotal;
 		group.amountEntire = group
 			.filter((order) => order.orderStatus.value === 3)
-			.reduce((acc, order) => acc + order.amountPayment, 0);
+			.reduce((acc, order) => roundMoney(acc + order.amountPayment), 0);
 
 		await createStyledExcel(couponCode, group);
 	}

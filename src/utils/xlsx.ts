@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs';
 import fs from 'fs';
 import path from 'path';
+import { calcProductCommission } from '../parser/parserUtils.js';
 import type { OrdersWithTotal } from '../types.js';
 
 const date = new Date();
@@ -14,8 +15,6 @@ export async function createStyledExcel(
 	couponCode: string,
 	orders: OrdersWithTotal,
 ): Promise<void> {
-	const SPECIAL_PRODUCT_NAME = 'Стейфолия Сыворотка для кожи головы и волос';
-
 	if (!fs.existsSync(folderPath)) {
 		fs.mkdirSync(folderPath);
 		console.log(`Папка создана: ${folderPath}`);
@@ -151,15 +150,9 @@ export async function createStyledExcel(
 			// else if (couponCode === 'face10') {}
 		} else if (couponCode === 'curlegina') {
 			order.products.forEach((product, index) => {
-				// 1. Определяем ставку
-				// Сравнение частичное — по вхождению подстроки
-				const isSpecial = product.name.includes(SPECIAL_PRODUCT_NAME);
-				const rateLabel = isSpecial ? '20%' : '15%';
-				const rateMultiplier = isSpecial ? 0.2 : 0.15;
-
-				// 2. Считаем комиссию за товар
-				const productTotalPrice = product.totalPrice || 0;
-				const itemCommission = (productTotalPrice * rateMultiplier * 0.9).toFixed(2);
+				// Ставка и комиссия считаются той же функцией, что и «Итого выплата»
+				const { rate, commission } = calcProductCommission(product, order.coupon);
+				const rateLabel = `${rate * 100}%`;
 
 				worksheet.addRow([
 					index === 0 ? ind : null,
@@ -167,7 +160,7 @@ export async function createStyledExcel(
 					index === 0 ? order.orderDate : null,
 					index === 0 ? order.amountWithCoupon : null,
 					rateLabel,
-					itemCommission,
+					commission,
 					index === 0 ? order.amountPayment : null,
 					index === 0 ? order.orderStatus.text : null,
 					product.name,

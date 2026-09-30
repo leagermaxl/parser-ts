@@ -11,6 +11,23 @@ import type {
 	ScrapedOrderRef,
 } from '../types.js';
 
+export const SPECIAL_PRODUCT_NAME = 'Стейфолия Сыворотка для кожи головы и волос';
+
+export const roundMoney = (value: number): number => Math.round(value * 100) / 100;
+
+/** Комиссия за товар: цена со скидкой купона × ставка (20% на спецтовар для curlegina, иначе 15%). */
+export function calcProductCommission(
+	product: Product,
+	coupon: Coupon | null,
+): { rate: number; commission: number } {
+	const isSpecial =
+		coupon?.code.toLowerCase() === 'curlegina' && product.name.includes(SPECIAL_PRODUCT_NAME);
+	const rate = isSpecial ? 0.2 : 0.15;
+	const discount = parseInt(coupon?.discountPercent ?? '', 10) || 0;
+	const commission = roundMoney((product.totalPrice || 0) * (1 - discount / 100) * rate);
+	return { rate, commission };
+}
+
 export const processFetchData = async (path: string, isLink: boolean): Promise<Order> => {
 	let html: string;
 	if (!isLink) html = await fs.readFile(path, 'utf-8');
@@ -255,29 +272,13 @@ export function processOrderData(orderArray: OrderTableRow[]): Order {
 				processedOrder.amountPayment =
 					Math.round(processedOrder.amountWithCoupon * 0.15 * 100) / 100;
 			} else {
-				processedOrder.amountPayment = products.reduce((sum, product) => {
-					if (
-						couponField?.code.toLowerCase() === 'curlegina' &&
-						product.name === 'Стейфолия Сыворотка для кожи головы и волос'
-					) {
-						sum +=
-							Math.round(
-								product.totalPrice *
-									(1.0 - parseInt(couponField?.discountPercent as string) / 100) *
-									0.2 *
-									100,
-							) / 100;
-					} else {
-						sum +=
-							Math.round(
-								product.totalPrice *
-									(1.0 - parseInt(couponField?.discountPercent as string) / 100) *
-									0.15 *
-									100,
-							) / 100;
-					}
-					return sum;
-				}, 0);
+				processedOrder.amountPayment = roundMoney(
+					products.reduce(
+						(sum, product) =>
+							sum + calcProductCommission(product, couponField).commission,
+						0,
+					),
+				);
 			}
 
 			//if (
